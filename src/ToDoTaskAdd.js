@@ -1,7 +1,11 @@
 import React from 'react'
+import {connect} from 'react-redux'
+import {useNavigate} from 'react-router-dom'
+
+import {addTodo} from './actions'
 
 
-class ToDoTaskAdd extends React.Component {
+class ToDoTaskAddInner extends React.Component {
 	
 	constructor(props){
 		super(props)
@@ -27,7 +31,9 @@ class ToDoTaskAdd extends React.Component {
 				prompt: this.state.prompt
 			})
 		}).then(res=>res.json()).then(data=> {
-			this.props.onTaskAdd(data);
+			//this.props.onTaskAdd(data);
+			this.props.dispatch(addTodo(data.task_name, data.prompt, data._id))
+			this.props.history('/')
 		})
 	}
 	
@@ -45,16 +51,22 @@ class ToDoTaskAdd extends React.Component {
 	}
 	
 	render(){
-		
-		
 		return (
-		<form onSubmit={this.onFormSubmit}>
-			<input type="text" value={this.state.task_name} onChange={this.onTaskNameChange}/>
-			<input type="text"value={this.state.prompt} onChange={this.onPromptChange}/>
-			<input type="submit" value="Добавить задачу"/>
-		</form>
+		<div>
+			<h1>{this.props.name}</h1>
+			<form onSubmit={this.onFormSubmit}>
+				<input type="text" value={this.state.task_name} onChange={this.onTaskNameChange} placeholder="Zadacha"/>
+				<input type="text"value={this.state.prompt} onChange={this.onPromptChange} placeholder = "Podskazka"/>
+				<input type="submit" value="Добавить задачу"/>
+			</form>
+		</div>
 		);
-		}
+	}
 }
 
-export default ToDoTaskAdd;
+function ToDoTaskAdd(props) {
+	return (<ToDoTaskAddInner {...props} history = {useNavigate()} />)
+
+}
+
+export default connect() (ToDoTaskAdd);
