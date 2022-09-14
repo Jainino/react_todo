@@ -1,15 +1,13 @@
 import React from 'react'
+import {connect} from 'react-redux'
+import {toggleTodo, removeTodo} from './actions'
+
 
 
 class ToDoTask extends React.Component {
 	
 	constructor(props){
 		super(props)
-		
-		this.state = {
-			done: props.done
-		}
-		
 		this.onTaskClick = this.onTaskClick.bind(this)
 		this.onTaskDeleteClick = this.onTaskDeleteClick.bind(this)
 	}
@@ -21,9 +19,7 @@ class ToDoTask extends React.Component {
 			method:'PATCH'
 		}).then(res=>{
 		if(res.status ===200) {
-			this.setState({
-				done: !this.state.done
-			})
+			this.props.dispatch(toggleTodo(this.props._id))
 		}
 	})
 	}
@@ -34,16 +30,22 @@ class ToDoTask extends React.Component {
 		fetch(`http://127.0.0.1:3000/tasks/${this.props._id}`,{
 			method:'DELETE'
 		}).then(res=>{
-		if(res.status ==200) {
-			this.props.onTaskDelete(this.props._id)
+		if(res.status ===200) {
+			this.props.dispatch(removeTodo(this.props._id))
 			}
 		})
 	}
 	
 	render(){
-		let task = <li><span onClick={this.onTaskDeleteClick}>X</span> <span onClick={this.onTaskClick}>{this.props.name}:{this.state.done ? 'Done' : 'Todo'}</span></li>
-		return task
-		}
+		return (
+			<li onClick={this.onTaskClick}>
+				<span onClick={this.onTaskDeleteClick}> 
+					<i className="fa fa-trash" ></i>
+				</span>
+					{this.props.name}:{this.props.done ? 'Done':'Todo'}
+			</li>
+		);
+	}
 }
 
-export default ToDoTask;
+export default connect() (ToDoTask);
