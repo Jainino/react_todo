@@ -10,7 +10,7 @@ class App extends React.Component{
 	
 	componentDidMount() {
 		
-		fetch('http://127.0.0.1:3000/tasks').then(res=>res.json()).then(data=>{
+		fetch(`tasks`).then(res=>res.json()).then(data=>{
 			this.props.dispatch(addTodoAll(data))
 		})
 	}
