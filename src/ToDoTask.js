@@ -15,7 +15,7 @@ class ToDoTask extends React.Component {
 	onTaskClick(e){
 		e.preventDefault()
 		
-		fetch(`http://127.0.0.1:3000/tasks/${this.props._id}`,{
+		fetch(`tasks/${this.props._id}`,{
 			method:'PATCH'
 		}).then(res=>{
 		if(res.status ===200) {
@@ -27,7 +27,7 @@ class ToDoTask extends React.Component {
 	onTaskDeleteClick(e){
 		e.preventDefault()
 		
-		fetch(`http://127.0.0.1:3000/tasks/${this.props._id}`,{
+		fetch(`tasks/${this.props._id}`,{
 			method:'DELETE'
 		}).then(res=>{
 		if(res.status ===200) {
